@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Seleção de Produtos</title>
+   <style>
+     img {
+       width: 100px;
+       height: 100px;
+       margin: 10px;
+       cursor: pointer;
+     }
+   </style>
+</head>
+<body>
+
+<h2>Selecione a quantidade de produtos:</h2>
+<div id="produtos">
+   <img src="nescau-204.jpg" onclick="selecionarProduto(1, 'Nescau', 2.50)" alt="Produto 1">
+   <span>R$ 2.50</span>
+   <img src="MokoChoko.png" onclick="selecionarProduto(2, 'MokoChoko', 3.00)" alt="Produto 2">
+   <span>R$ 3.00</span>
+   <!-- Add similar spans for other products -->
+</div>
+
+<div id="listaPedidos">
+   <h3>Lista de Pedidos:</h3>
+   <ul id="pedidosLista">
+   </ul>
+</div>
+
+<div id="total">
+   <h3>Total: R$ <span id="valorTotal">0.00</span></h3>
+</div>
+
+<script>
+   var valorTotalGlobal = 0;
+   var pedidos = [];
+
+   function selecionarProduto(id, nome, preco) {
+      var quantidade = parseInt(prompt('Informe a quantidade desejada para ' + nome + ':'));
+      if (!isNaN(quantidade) && quantidade > 0) {
+         var valorTotalProduto = quantidade * preco;
+         console.log(nome + ': Quantidade selecionada = ' + quantidade);
+         console.log(nome + ': Valor Total = R$ ' + valorTotalProduto.toFixed(2));
+         valorTotalGlobal += valorTotalProduto;
+
+         // Add the selected item to the list of orders
+         pedidos.push({
+            id: id,
+            nome: nome,
+            quantidade: quantidade,
+            valorTotalProduto: valorTotalProduto.toFixed(2),
+         });
+
+         // Update the displayed total value
+         var valorTotalElement = document.getElementById('valorTotal');
+         valorTotalElement.textContent = valorTotalGlobal.toFixed(2);
+
+         // Update the list of orders
+         updatePedidosLista();
+      } else {
+         alert('Quantidade inválida. Por favor, insira um número válido.');
+      }
+   }
+
+   function updatePedidosLista() {
+      var pedidosListaElement = document.getElementById('pedidosLista');
+      pedidosListaElement.innerHTML = '';
+      pedidos.forEach(function(pedido) {
+         var listItem = document.createElement('li');
+         listItem.textContent = pedido.nome + ' - Quantidade: ' + pedido.quantidade + ', Total: R$ ' + pedido.valorTotalProduto;
+         pedidosListaElement.appendChild(listItem);
+      });
+   }
+</script>
+</body>
+</html>
